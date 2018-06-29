@@ -23,6 +23,7 @@ const { Carousel } = require('actions-on-google');
 
 process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 
+// URLs for images used in card rich responses
 const imageUrl = 'https://developers.google.com/actions/images/badges/XPM_BADGING_GoogleAssistant_VER.png';
 const imageUrl2 = 'https://lh3.googleusercontent.com/Nu3a6F80WfixUqf_ec_vgXy_c0-0r4VLJRXjVFF_X_CIilEu8B9fT35qyTEj_PEsKw';
 const linkUrl = 'https://assistant.google.com/';
@@ -33,10 +34,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
 
   function googleAssistantOther(agent) {
-    // Get Actions on Google library conv instance
-    let conv = agent.conv();
-    // Use Actions on Google library to add responses
-    conv.ask('Please choose an item:');
+    let conv = agent.conv(); // Get Actions on Google library conversation object
+    conv.ask('Please choose an item:'); // Use Actions on Google library to add responses
     conv.ask(new Carousel({
       title: 'Google Assistant',
       items: {
@@ -90,6 +89,9 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Default Fallback Intent', fallback);
+  // if requests for intents other than the default welcome and default fallback
+  // is from the Google Assistant use the `googleAssistantOther` function
+  // otherwise use the `other` function
   if (agent.requestSource === agent.ACTIONS_ON_GOOGLE) {
     intentMap.set(null, googleAssistantOther);
   } else {

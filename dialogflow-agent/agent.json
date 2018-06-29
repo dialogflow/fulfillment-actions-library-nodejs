@@ -25,7 +25,7 @@
   },
   "defaultTimezone": "America/Los_Angeles",
   "webhook": {
-    "url": "https://us-central1-actionsontransactions.cloudfunctions.net/dialogflowFirebaseFulfillment",
+    "url": "",
     "headers": {
       "": ""
     },
